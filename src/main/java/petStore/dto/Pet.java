@@ -4,19 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreatePetDto {
-    public BigDecimal id;
+public class Pet {
+    public Long id;
     public Category category;
     public String name;
-    public ArrayList<String> photoUrls;
-    public ArrayList<Tag> tags;
+    public List<String> photoUrls;
+    public List<Tag> tags;
     public String status;
 }

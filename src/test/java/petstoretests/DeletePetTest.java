@@ -1,28 +1,34 @@
 package petstoretests;
 
+import io.restassured.response.Response;
 import org.testng.annotations.Test;
-import petStore.dto.CreatePetDto;
-import petStore.providers.CreatePetProvider;
-import petStore.services.PetServices;
+import petStore.dto.Pet;
+import petStore.providers.PetProvider;
+import petStore.services.PetService;
+
+import static org.apache.http.HttpStatus.*;
+import static org.testng.AssertJUnit.assertEquals;
 
 public class DeletePetTest {
-    PetServices petService = new PetServices();
+    PetService petService = new PetService();
 
     @Test
-    public void deletePet() {
-        var response = petService.createPet(CreatePetProvider.createPet("Rinna", "available"));
-        response.then().statusCode(200);
-        var pet = response.then().extract().as(CreatePetDto.class);
-        petService.deletePet(String.valueOf(pet.getId())).then().statusCode(200);
+    public void deleteById() {
+        Response response = petService.create(PetProvider.createPet("Rinna", "available"));
+
+        Pet pet = response.then().extract().as(Pet.class);
+
+        petService.remove(String.valueOf(pet.getId()));
+        assertEquals(SC_OK, response.statusCode());
     }
 
     @Test
     public void deletePetNotFound() {
-        petService.deletePet(null).then().statusCode(404);
+        assertEquals(SC_NOT_FOUND, petService.remove(null).statusCode());
     }
 
     @Test
     public void deletePetInvalidIdSupplied() {
-        petService.deletePet("1111111111111111111111111111111111111111111111111111111111");
+        assertEquals(SC_BAD_REQUEST, petService.remove("not_valid_value").statusCode());
     }
 }
