@@ -20,7 +20,6 @@ public class CreatePetTest {
         Pet petRinna = PetProvider.createPet("Rinna", "availiable");
         Response response = petService.create(petRinna);
         Pet pet = response.as(Pet.class);
-        petRinna.setId(pet.getId());
         int statusCode = response.statusCode();
 
         assertEquals(pet.getName(), petRinna.getName());
