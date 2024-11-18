@@ -14,21 +14,23 @@ public class DeletePetTest {
 
     @Test
     public void deleteById() {
-        Response response = petService.create(PetProvider.createPet("Rinna", "available"));
+        Pet petWithId = PetProvider.createPet("Rinna", "available");
+        Response response = petService.create(petWithId);
+        int statusCode = response.statusCode();
 
-        Pet pet = response.then().extract().as(Pet.class);
-
-        petService.remove(String.valueOf(pet.getId()));
-        assertEquals(SC_OK, response.statusCode());
+        petService.remove(String.valueOf(petWithId.getId()));
+        assertEquals(SC_OK, statusCode);
     }
 
     @Test
     public void deletePetNotFound() {
-        assertEquals(SC_NOT_FOUND, petService.remove(null).statusCode());
+        int statusCode = petService.remove(null).statusCode();
+        assertEquals(SC_NOT_FOUND, statusCode);
     }
 
     @Test
     public void deletePetInvalidIdSupplied() {
-        assertEquals(SC_BAD_REQUEST, petService.remove("not_valid_value").statusCode());
+        int statusCode = petService.remove("not_valid_value").statusCode();
+        assertEquals(SC_BAD_REQUEST, statusCode);
     }
 }

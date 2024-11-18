@@ -4,28 +4,36 @@ package petstoretests;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 import petStore.dto.Pet;
+import petStore.providers.PetProvider;
 import petStore.services.PetService;
 
 import static org.apache.http.HttpStatus.SC_METHOD_NOT_ALLOWED;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.testng.AssertJUnit.assertEquals;
-import static petStore.providers.PetProvider.createPet;
+import static org.testng.AssertJUnit.assertNotNull;
 
 public class CreatePetTest {
     PetService petService = new PetService();
 
     @Test
     public void createPetPositive() {
-        Response response = petService.create(createPet("Rinna", "available"));
+        Pet petRinna = PetProvider.createPet("Rinna", "availiable");
+        Response response = petService.create(petRinna);
+        Pet pet = response.as(Pet.class);
+        petRinna.setId(pet.getId());
+        int statusCode = response.statusCode();
 
-        Pet pet = response.then().extract().as(Pet.class);
-
-        assertEquals(createPet(pet.getId(), "Rinna", "available"), pet);
-        assertEquals(SC_OK, response.getStatusCode());
+        assertEquals(pet.getName(), petRinna.getName());
+        assertEquals(pet.getStatus(), petRinna.getStatus());
+        assertNotNull(pet.getId());
+        assertEquals(SC_OK, statusCode);
     }
 
     @Test
     public void createPetNegative() {
-        assertEquals(SC_METHOD_NOT_ALLOWED, petService.create(createPet(null, null)).statusCode());
+        Pet petNull = PetProvider.createPet(null, null);
+        int statusCode = petService.create(petNull).statusCode();
+
+        assertEquals(SC_METHOD_NOT_ALLOWED, statusCode);
     }
 }
