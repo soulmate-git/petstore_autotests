@@ -22,10 +22,10 @@ public class CreatePetTest {
         Pet pet = response.as(Pet.class);
         int statusCode = response.statusCode();
 
+        assertEquals(SC_OK, statusCode);
         assertEquals(pet.getName(), petRinna.getName());
         assertEquals(pet.getStatus(), petRinna.getStatus());
         assertNotNull(pet.getId());
-        assertEquals(SC_OK, statusCode);
     }
 
     @Test

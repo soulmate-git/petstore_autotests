@@ -43,4 +43,21 @@ public abstract class BaseService {
                 .delete(path)
                 .prettyPeek();
     }
+
+    public Response get(String path) {
+        return given()
+                .config(sslConfig)
+                .log().all()
+                .get(path).prettyPeek();
+    }
+
+
+    public Response put(String path, Object body) {
+        return given()
+                .contentType(JSON)
+                .body(body)
+                .when()
+                .log().all()
+                .put(path).prettyPeek();
+    }
 }

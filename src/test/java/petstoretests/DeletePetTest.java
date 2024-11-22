@@ -14,12 +14,14 @@ public class DeletePetTest {
 
     @Test
     public void deleteById() {
-        Pet petWithId = PetProvider.createPet("Rinna", "available");
+        Long petId = 123L;
+        Pet petWithId = PetProvider.createPet(petId, "Rinna", "available");
         Response response = petService.create(petWithId);
-        int statusCode = response.statusCode();
-
-        petService.remove(String.valueOf(petWithId.getId()));
-        assertEquals(SC_OK, statusCode);
+        int statusCodeCreate = response.statusCode();
+        petService.remove(String.valueOf(petId));
+        assertEquals(SC_OK, statusCodeCreate);
+        int statusCodeFind = petService.findById(petId).statusCode();
+        assertEquals(SC_NOT_FOUND, statusCodeFind);
     }
 
     @Test
@@ -30,7 +32,7 @@ public class DeletePetTest {
 
     @Test
     public void deletePetInvalidIdSupplied() {
-        int statusCode = petService.remove("not_valid_value").statusCode();
+        int statusCode = petService.remove("not valid value").statusCode();
         assertEquals(SC_BAD_REQUEST, statusCode);
     }
 }

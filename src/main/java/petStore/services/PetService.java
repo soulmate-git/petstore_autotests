@@ -20,4 +20,16 @@ public class PetService extends BaseService {
     public Response remove(String id) {
         return delete(url + "/" + id);
     }
+
+    public Response findByStatus(String status) {
+        return get(url + "/findByStatus?status=" + status);
+    }
+
+    public Response findById(Long id) {
+        return get(url + "/" + id);
+    }
+
+    public Response update(Pet pet) {
+        return put(url, pet);
+    }
 }
