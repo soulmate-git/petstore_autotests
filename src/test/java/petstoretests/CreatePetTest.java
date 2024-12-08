@@ -2,6 +2,7 @@ package petstoretests;
 
 
 import io.restassured.response.Response;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import petStore.dto.Pet;
 import petStore.providers.PetProvider;
@@ -15,9 +16,18 @@ import static org.testng.AssertJUnit.assertNotNull;
 public class CreatePetTest {
     PetService petService = new PetService();
 
-    @Test
-    public void createPetPositive() {
-        Pet petRinna = PetProvider.createPet("Rinna", "availiable");
+    @DataProvider(name = "status")
+    public Object[][] status() {
+        return new Object[][]{
+                {"available"},
+                {"pending"},
+                {"sold"}
+        };
+    }
+
+    @Test(dataProvider = "status")
+    public void createPetPositive(String status) {
+        Pet petRinna = PetProvider.createPet("Rinna", status);
         Response response = petService.create(petRinna);
         Pet pet = response.as(Pet.class);
         int statusCode = response.statusCode();
@@ -33,6 +43,7 @@ public class CreatePetTest {
         Pet petNull = PetProvider.createPet(null, null);
         int statusCode = petService.create(petNull).statusCode();
 
+        // TODO сервис возвращает статускод 200, а от сервиса ожидается 405
         assertEquals(SC_METHOD_NOT_ALLOWED, statusCode);
     }
 }

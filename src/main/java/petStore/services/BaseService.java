@@ -51,7 +51,6 @@ public abstract class BaseService {
                 .get(path).prettyPeek();
     }
 
-
     public Response put(String path, Object body) {
         return given()
                 .contentType(JSON)

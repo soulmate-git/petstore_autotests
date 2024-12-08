@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.*;
 
 public class GetPetTest {
     PetService petService = new PetService();
@@ -32,11 +32,9 @@ public class GetPetTest {
         int statusCode = response.statusCode();
         List<Pet> pets = response.as(new TypeRef<>() {
         });
-        for (Pet pet : pets) {
-            String actualStatus = pet.getStatus();
-            assertEquals(status, actualStatus);
-        }
+        assertFalse(pets.isEmpty());
 
+        pets.forEach(pet -> assertEquals(status, pet.getStatus()));
         assertEquals(SC_OK, statusCode);
     }
 
@@ -45,8 +43,7 @@ public class GetPetTest {
         Response response = petService.findByStatus("invalid status");
         int statusCode = response.statusCode();
 
+        // TODO От сервера ожидается статус 400, а сервер возвращает 200
         assertEquals(SC_BAD_REQUEST, statusCode);
-
     }
-
 }
