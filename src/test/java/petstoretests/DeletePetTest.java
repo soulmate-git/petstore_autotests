@@ -26,9 +26,11 @@ public class DeletePetTest {
     public void deleteById(String status) {
         Long petId = 123L;
         Pet petWithId = PetProvider.createPet(petId, "Rinna", status);
+
         Response response = petService.create(petWithId);
         int statusCodeCreate = response.statusCode();
         assertEquals(SC_OK, statusCodeCreate);
+
         petService.remove(String.valueOf(petId));
         int statusCodeFind = petService.findById(petId).statusCode();
         assertEquals(SC_NOT_FOUND, statusCodeFind);

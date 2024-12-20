@@ -15,15 +15,17 @@ public class UpdatePetTest {
 
     @Test
     public void updatePet() {
-        Pet oldPet = petService.create(createPet("Tom", "available")).as(Pet.class);
-        Long petId = oldPet.getId();
-        Pet newPet = createPet(petId, "Rinna", "sold");
-        Response response = petService.update(newPet);
-        int statusCode = response.statusCode();
-        Pet actualPet = response.as(Pet.class);
+        Pet oldPet = createPet("Tom", "available");
+        Response createResponse = petService.create(oldPet);
+        assertEquals(SC_OK, createResponse.statusCode());
+        Long petId = createResponse.as(Pet.class).getId();
 
-        assertNotSame(oldPet, newPet);
-        assertEquals(newPet, actualPet);
-        assertEquals(SC_OK,statusCode);
+        Pet updatedPet = createPet(petId, "Rinna", "sold");
+        Response updateResponse = petService.update(updatedPet);
+        Pet currentPet = updateResponse.as(Pet.class);
+
+        assertEquals(SC_OK, updateResponse.statusCode());
+        assertNotSame(oldPet, updatedPet);
+        assertEquals(updatedPet, currentPet);
     }
 }

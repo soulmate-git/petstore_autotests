@@ -30,12 +30,12 @@ public class GetPetTest {
     public void getPetListByStatus(String status) {
         Response response = petService.findByStatus(status);
         int statusCode = response.statusCode();
-        List<Pet> pets = response.as(new TypeRef<>() {
-        });
-        assertFalse(pets.isEmpty());
+        List<Pet> pets = response.as(new TypeRef<>() {});
 
-        pets.forEach(pet -> assertEquals(status, pet.getStatus()));
+        assertFalse(pets.isEmpty());
         assertEquals(SC_OK, statusCode);
+        pets.forEach(pet -> assertEquals(status, pet.getStatus()));
+
     }
 
     @Test
