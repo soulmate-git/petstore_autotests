@@ -39,6 +39,7 @@ public class DeletePetTest {
     @Test
     public void deletePetNotFound() {
         int statusCode = petService.remove(null).statusCode();
+
         assertEquals(SC_NOT_FOUND, statusCode);
     }
 
