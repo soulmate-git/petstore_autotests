@@ -13,7 +13,7 @@ public class PetService extends BaseService {
         headers.put("Content-type", "application/json");
     }
 
-    public  Response create(Pet pet) {
+    public Response create(Pet pet) {
         return post(headers, pet, url);
     }
 

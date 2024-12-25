@@ -24,6 +24,7 @@ public class CreateOrderTest {
         Pet pet = petService.create(petForOrder).as(Pet.class);
         Order newOrder = OrderProvider.createOrder(Long.valueOf(randomNumeric(12)), pet.getId(), false);
         Response responseCreateOrder = storeService.createOrder(newOrder);
+
         Order order = responseCreateOrder.as(Order.class);
         int statusCode = responseCreateOrder.statusCode();
 
@@ -35,6 +36,7 @@ public class CreateOrderTest {
     @Test
     public void createOrderNegative() {
         Order newOrder = OrderProvider.createOrder(null, null, true);
+
         Response responseCreateOrder = storeService.createOrder(newOrder);
         int statusCode = responseCreateOrder.statusCode();
 

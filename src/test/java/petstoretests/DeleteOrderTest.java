@@ -24,6 +24,7 @@ public class DeleteOrderTest {
         Order newOrder = OrderProvider.createOrder(Long.valueOf(randomNumeric(12)), pet.getId(), false);
         Response responseCreateOrder = storeService.createOrder(newOrder);
         Order order = responseCreateOrder.as(Order.class);
+
         int statusCodeCreate = responseCreateOrder.statusCode();
         Response responseDelete = storeService.removeOrder(String.valueOf(order.getId()));
         int statusCodeDelete = responseDelete.statusCode();
